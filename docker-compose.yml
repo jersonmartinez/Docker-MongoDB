@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  # Configs #
+  database:
+    image: mongo:latest
+    container_name: mongodb
+    hostname: host-mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root-master
+      MONGO_INITDB_ROOT_PASSWORD: password-master
+      MONGO_INITDB_DATABASE: db-master
+    volumes:
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./mongo-volume:/data/db
+      - ./mongo-volume/log:/var/log/mongodb/
+    ports:
+      - '27017-27019:27017-27019'
