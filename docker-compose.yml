@@ -7,6 +7,8 @@ services:
     build: .
     ports: 
       - '8000:5000'
+    depends_on:
+      - database
     volumes:
       - ./app:/app
     environment:
@@ -17,7 +19,7 @@ services:
     image: mongo:latest
     container_name: mongodb
     hostname: host-mongo
-    restart: always
+    # restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root-master
       MONGO_INITDB_ROOT_PASSWORD: password-master
@@ -30,4 +32,6 @@ services:
       - '27017-27019:27017-27019'
     networks:
       - default
-      
+volumes:
+  persistent:
+  static_volume:

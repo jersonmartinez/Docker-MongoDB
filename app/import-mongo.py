@@ -40,6 +40,9 @@ class getScriptXML:
             jsonfileObj.close()
 
 def importJSONtoMongoDB():
+    import ipdb
+    ipdb.set_trace()
+
     # Making Connection
     mongoClient = MongoClient("mongodb://root-master:password-master@localhost:27017/?authMechanism=DEFAULT&authSource=db-master")
     # mongoClient = MongoClient('localhost', 27017)
