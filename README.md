@@ -3,7 +3,7 @@
 #### Manage MongoDB container with Docker Compose
 
 ```bash
-$ docker-compose up -d
+$ docker-compose up --build -d
 
 Creating network "docker-mongodb_default" with the default driver
 Pulling database (mongo:)...
