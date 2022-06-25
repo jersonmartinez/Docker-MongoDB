@@ -1,6 +1,18 @@
-version: '3.8'
+version: '3.9'
 services:
   # Configs #
+  web:
+    container_name: web_flask
+    hostname: web_flask
+    build: .
+    ports: 
+      - '8000:5000'
+    volumes:
+      - ./app:/app
+    environment:
+      FLASK_ENV: development
+    networks:
+      - default
   database:
     image: mongo:latest
     container_name: mongodb
@@ -16,3 +28,7 @@ services:
       - ./mongo-volume/log:/var/log/mongodb/
     ports:
       - '27017-27019:27017-27019'
+    networks:
+      - default
+volumes:
+    persistent:
