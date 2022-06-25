@@ -21,3 +21,23 @@ Digest: sha256:37e84d3dd30cdfb5472ec42b8a6b4dc6ca7cacd91ebcfa0410a54528bbc5fa6d
 Status: Downloaded newer image for mongo:latest
 Creating mongo-container ... done
 ```
+
+#### Access to container WEB_API
+
+```bash
+docker exec -ti web_api sh
+```
+
+#### Import XML to MongoDB
+
+Execute with Docker. 
+
+```bash
+docker exec -ti web_api python import-mongo.py
+```
+
+#### Queries API
+
+```bash
+curl ...
+```

@@ -2,8 +2,8 @@ version: '3.9'
 services:
   # Configs #
   web:
-    container_name: web_flask
-    hostname: web_flask
+    container_name: web_api
+    hostname: web_api
     build: .
     ports: 
       - '8000:5000'
