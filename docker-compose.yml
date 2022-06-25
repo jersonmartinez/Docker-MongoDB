@@ -30,5 +30,4 @@ services:
       - '27017-27019:27017-27019'
     networks:
       - default
-volumes:
-    persistent:
+      
