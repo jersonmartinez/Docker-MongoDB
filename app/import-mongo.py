@@ -46,9 +46,9 @@ class getScriptXML:
         # ipdb.set_trace()
 
         # Making Connection
-        mongoClient = MongoClient("mongodb://root-master:password-master@host-mongo:27017/?authMechanism=DEFAULT&authSource=db-master")
+        mongoClient = MongoClient("mongodb://root-master:password-master@fz_mongodb:27017/?authMechanism=DEFAULT&authSource=db-fzsports")
 
-        db = mongoClient["db-master"]
+        db = mongoClient["db-fzsports"]
         Collection = db["sports"]
 
         # Loading or Opening the json file
