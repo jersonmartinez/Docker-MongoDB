@@ -36,4 +36,3 @@ services:
       - default
 volumes:
   persistent:
-  static_volume:

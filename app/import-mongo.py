@@ -38,35 +38,31 @@ class getScriptXML:
         with open("JSON/sports.json", "w") as jsonfileObj:
             jsonfileObj.write(jsonObj)
             jsonfileObj.close()
+        
+        self.importJSONtoMongoDB()
 
-def importJSONtoMongoDB():
-    # import ipdb
-    # ipdb.set_trace()
+    def importJSONtoMongoDB(self):
+        # import ipdb
+        # ipdb.set_trace()
 
-    # Making Connection
-    mongoClient = MongoClient("mongodb://root-master:password-master@localhost:27017/?authMechanism=DEFAULT&authSource=db-master")
-    # mongoClient = MongoClient('localhost', 27017)
+        # Making Connection
+        mongoClient = MongoClient("mongodb://root-master:password-master@host-mongo:27017/?authMechanism=DEFAULT&authSource=db-master")
 
-    # database
-    db = mongoClient["db-master"]
+        db = mongoClient["db-master"]
+        Collection = db["sports"]
 
-    # Created or Switched to collection
-    Collection = db["sports"]
+        # Loading or Opening the json file
+        with open('JSON/sports.json') as file:
+            file_data = json.load(file)
 
-    # Loading or Opening the json file
-    with open('JSON/sports.json') as file:
-        file_data = json.load(file)
-
-    if isinstance(file_data, list):
-        Collection.insert_many(file_data)
-    else:
-        Collection.insert_one(file_data)
+        if isinstance(file_data, list):
+            Collection.insert_many(file_data)
+        else:
+            Collection.insert_one(file_data)
 
 if __name__ == "__main__":
-    # getScriptXML(
-    #     'https://fx-nunchee-assets.s3.amazonaws.com/data/sports.xml',
-    #     'XML',
-    #     'sports.xml'
-    # ).getData()
-
-    importJSONtoMongoDB()
+    getScriptXML(
+        'https://fx-nunchee-assets.s3.amazonaws.com/data/sports.xml',
+        'XML',
+        'sports.xml'
+    ).getData()
