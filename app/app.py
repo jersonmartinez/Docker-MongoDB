@@ -1,8 +1,7 @@
 import os
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request, url_for, redirect
 from pymongo import MongoClient
-import requests
 
 app = Flask(__name__)
 
@@ -16,23 +15,23 @@ def getDB():
 
 # List all teams available in the DB
 app.route('/api/team')
-def get_all_teams():
+def get_teams():
     response = {'message': 'List all teams available in the DB.'}
     return jsonify(response)
 
 # List the players of the team ID
 app.route('/api/teams/:<idTeam>/players', methods=['GET'])
-def get_user(idTeam):
+def get_players_team(idTeam):
     response = {'message': 'List the players of the team ID.' + idTeam}
     return jsonify(response)
 
 # List all players in the same position ID
 app.route('/api/teams/players/:<position>', methods=['GET'])
-def get_user(position):
+def get_players_position(position):
     response = {'message': 'List all players in the same position ID.' + position}
     return jsonify(response)
 
-@app.route('/')
+@app.route('/', methods=('GET', 'POST'))
 def hello():
     return 'Hola FzSports!'
 

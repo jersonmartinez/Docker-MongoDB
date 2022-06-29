@@ -57,7 +57,7 @@ docker system prune -a -f && docker builder prune -a -f
 #### Recreate container web
 
 ```bash
-docker-compose up --build --force-recreate --no-deps web
+docker-compose up --build --force-recreate --no-deps -d web
 ```
 
 #### Show logs of API Execution
