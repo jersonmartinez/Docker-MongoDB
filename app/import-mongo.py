@@ -41,17 +41,18 @@ class getScriptXML:
         
         self.importJSONtoMongoDB()
 
-    def importJSONtoMongoDB(self):
+    def getDB(self):
         # import ipdb
         # ipdb.set_trace()
 
-        # Making Connection
         mongoClient = MongoClient("mongodb://root-master:password-master@fz_mongodb:27017/?authMechanism=DEFAULT&authSource=db-fzsports")
 
-        db = mongoClient["db-fzsports"]
+        return mongoClient["db-fzsports"]
+
+    def importJSONtoMongoDB(self):
+        db = self.getDB()
         Collection = db["sports"]
 
-        # Loading or Opening the json file
         with open('JSON/sports.json') as file:
             file_data = json.load(file)
 

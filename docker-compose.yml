@@ -6,7 +6,17 @@ services:
       - .env
     container_name: ${WEB_HOST}
     hostname: ${WEB_HOST}
-    build: .
+    build: ./app
+    entrypoint:
+      - flask
+      - run
+      - --host=0.0.0.0
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
+      FLASK_RUN_HOST: 0.0.0.0
+      TEMPLATES_AUTO_RELOAD: 'True'
+      FLASK_ENV: development
     ports: 
       - '8000:5000'
     links:
@@ -15,8 +25,6 @@ services:
       - database
     volumes:
       - ./app:/app
-    environment:
-      FLASK_ENV: development
     networks:
       - default
   database:

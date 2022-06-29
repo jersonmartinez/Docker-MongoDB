@@ -22,10 +22,10 @@ Status: Downloaded newer image for mongo:latest
 Creating mongo-container ... done
 ```
 
-#### Access to container WEB_API
+#### Access to container FZ_API
 
 ```bash
-docker exec -ti web_api sh
+docker exec -ti fz_api sh
 ```
 
 #### Import XML to MongoDB
@@ -33,11 +33,35 @@ docker exec -ti web_api sh
 Execute with Docker. 
 
 ```bash
-docker exec -ti web_api python import-mongo.py
+docker exec -ti fz_api python import-mongo.py
 ```
 
 #### Queries API
 
 ```bash
 curl ...
+```
+
+#### Delete All
+
+```bash
+rm -rf mongo-volume app/__pycache__/ app/JSON/ app/XML/ && mkdir mongo-volume
+```
+
+#### Delete cache
+
+```bash
+docker system prune -a -f && docker builder prune -a -f
+```
+
+#### Recreate container web
+
+```bash
+docker-compose up --build --force-recreate --no-deps web
+```
+
+#### Show logs of API Execution
+
+```bash
+docker logs --tail 1000 -f fz_api
 ```
