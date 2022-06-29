@@ -14,19 +14,19 @@ def getDB():
     return mongoClient["db-fzsports"]
 
 # List all teams available in the DB
-app.route('/api/team')
+@app.route('/api/team')
 def get_teams():
     response = {'message': 'List all teams available in the DB.'}
     return jsonify(response)
 
 # List the players of the team ID
-app.route('/api/teams/:<idTeam>/players', methods=['GET'])
+@app.route('/api/teams/:<idTeam>/players', methods=['GET'])
 def get_players_team(idTeam):
     response = {'message': 'List the players of the team ID.' + idTeam}
     return jsonify(response)
 
 # List all players in the same position ID
-app.route('/api/teams/players/:<position>', methods=['GET'])
+@app.route('/api/teams/players/:<position>', methods=['GET'])
 def get_players_position(position):
     response = {'message': 'List all players in the same position ID.' + position}
     return jsonify(response)
