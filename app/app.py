@@ -1,29 +1,81 @@
-import os
 import json
-from flask import Flask, jsonify, request, url_for, redirect
+from pydoc import resolve
+from flask import Flask, jsonify, request, json, Response
 from pymongo import MongoClient
+import logging as log
 
 app = Flask(__name__)
 
-def getDB():
-    # import ipdb
-    # ipdb.set_trace()
 
-    mongoClient = MongoClient("mongodb://root-master:password-master@fz_mongodb:27017/?authMechanism=DEFAULT&authSource=db-fzsports")
+class MongoAPI:
+    def __init__(self, data):
+        log.basicConfig(level=log.DEBUG,
+                        format='%(asctime)s %(levelname)s:\n%(message)s\n')
+        # self.client = MongoClient("mongodb://localhost:27017/")  # When only Mongo DB is running on Docker.
+        # When both Mongo and This application is running on
+        self.client = MongoClient( "mongodb://root-master:password-master@fz_mongodb:27017/")
+        # Docker and we are using Docker Compose
 
-    return mongoClient["db-fzsports"]
+        database = data['database']
+        collection = data['collection']
+        cursor = self.client[database]
+        self.collection = cursor[collection]
+        self.data = data
+
+    def read(self):
+        log.info('Reading All Data')
+
+        documents = self.collection.find({}, {'_id': False, 'plantelEquipo.equipo': True})
+        output = [{item: data[item] for item in data if item != '_id'} for data in documents]
+        
+        # pipeline = [{'$group': {'_id': {'equipo': '$carrierA'},'count': {'$sum': 1}}}]
+        # return list(self.collection.aggregate(pipeline))
+
+        # pipeline = [{"$match": 'equipo'}]
+        # return self.collection.aggregate(pipeline).to_list(length=None)
+
+        # nd_info = self.collection.index_information()
+        # return nd_info
+        return output[0]['plantelEquipo']['equipo']
+        # return output[0]['plantelEquipo']['equipo'][0]['@nombre']
+
+
 
 # List all teams available in the DB
 @app.route('/api/team')
 def get_teams():
-    response = {'message': 'List all teams available in the DB.'}
-    return jsonify(response)
+
+    data = {
+        "database": "db-fzsports",
+        "collection": "sports"
+    }
+
+    obj1 = MongoAPI(data)
+    response = obj1.read()
+    return Response(response=json.dumps(response), status=200, mimetype='application/json')
+
+    # response = {'message': 'List all teams available in the DB.'}
+    # return jsonify(response)
 
 # List the players of the team ID
 @app.route('/api/teams/:<idTeam>/players', methods=['GET'])
 def get_players_team(idTeam):
-    response = {'message': 'List the players of the team ID.' + idTeam}
-    return jsonify(response)
+
+    data = {
+        "database": "db-fzsports",
+        "collection": "sports"
+    }
+
+    obj1 = MongoAPI(data)
+    response = obj1.read()
+
+    # return Response(json.dumps(response, sort_keys=True))
+    # response = response[0]['@nombre']
+
+    return Response(response=json.dumps(response), status=200, mimetype='application/json')
+
+    # response = {'message': 'List the players of the team ID: ' + idTeam}
+    # return jsonify(response)
 
 # List all players in the same position ID
 @app.route('/api/teams/players/:<position>', methods=['GET'])
